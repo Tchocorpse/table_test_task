@@ -26,7 +26,8 @@ class TableView(APIView):
             table = table.filter(**self.prepare_filtering_request(col, logic, value))
 
         total = len(table)
-        table = table[offset : offset + limit]
+        if limit:
+            table = table[offset: offset + limit]
         serialized_table = TableSerializer(table, many=True).data
         return JsonResponse({"table": serialized_table, "total": total}, status=200)
 
